@@ -1,4 +1,5 @@
-//import {cart} from '../data/cart.js';
+import {cart,updateCart,addToCart} from '../data/cart.js';
+import {products} from '../data/products.js';
 let productHTML ='';
 
 products.forEach((element) =>{
@@ -56,30 +57,32 @@ products.forEach((element) =>{
   });
 document.querySelector('.js-gridSelector').innerHTML = productHTML;
 
+/*unction addToCart(itemId){
+  let matchItem="";
+  cart.forEach((item) =>{
+    if(itemId === item.productId){
+      matchItem = item;
+    }
+  });
+  
+  const quantitySelector= document.querySelector(`.js-selector-${itemId}`);
+
+  const quantity = Number(quantitySelector.value); 
+
+  if(matchItem){
+    matchItem.quantity+=quantity;
+  }
+  else{
+    cart.push({
+      productId : itemId,
+      quantity : quantity
+    });
+  }
+}*/
 document.querySelectorAll('.add-to-cart-button').forEach((button) =>{
     button.addEventListener('click',()=>{
       const itemId = button.dataset.productid;
-      let matchItem="";
-
-      cart.forEach((item) =>{
-        if(itemId === item.productId){
-          matchItem = item;
-        }
-      });
-      
-      const quantitySelector= document.querySelector(`.js-selector-${itemId}`);
-
-      const quantity = Number(quantitySelector.value); 
-
-      if(matchItem){
-        matchItem.quantity+=quantity;
-      }
-      else{
-        cart.push({
-          productId : itemId,
-          quantity : quantity
-        });
-      }
+      addToCart(itemId);
 
       document.querySelector(`.js-added-to-cart-${itemId}`).classList.add('visible');
       document.querySelector(`.js-added-to-cart-${itemId}`).innerHTML='<img src="images/icons/checkmark.png"> Added';
@@ -88,12 +91,7 @@ document.querySelectorAll('.add-to-cart-button').forEach((button) =>{
       document.querySelector(`.js-added-to-cart-${itemId}`).classList.remove('visible');
       },2000);       
 
+      updateCart();
       
-      let addQuantity=0;
-      cart.forEach((item) =>{
-        addQuantity+=item.quantity;
-      });
-      document.querySelector('.js-addQuantity').innerHTML = addQuantity; 
-      console.log(cart);
     })
   });
